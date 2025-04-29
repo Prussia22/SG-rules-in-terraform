@@ -1,11 +1,12 @@
 
 variable "sgs" {
-    type = map(object({
-      name = string
+    type          = map(object({
+      name        = string
       description = optional(string)
-      tags = optional(map(string))
-      vpc_id = optional(string)
+      tags        = optional(map(string))
+      vpc_id      = optional(string)
     }))
+    default = {}
 }
 
 variable "sg_rules" {
@@ -16,10 +17,10 @@ variable "sg_rules" {
     from_port   = optional(number)
     to_port     = optional(number)
     ip_protocol =   optional(string)
-    sgs = list(string)
-    direction = string
-    
+    sgs         = list(string)
+    direction   = string
   }))
+  default = {}
   validation {
     condition = alltrue([for rule in var.sg_rules : contains(["ingress", "egress", "both"], rule.direction)])
     error_message = "All sg_rules must have a direction of ingress, egress, or both."
